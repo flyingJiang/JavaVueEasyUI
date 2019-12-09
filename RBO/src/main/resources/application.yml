@@ -1,0 +1,11 @@
+###端口号
+server:
+  port: 8001
+spring:
+  thymeleaf:
+    cache: false
+    mode: HTML5
+    encoding: UTF-8
+  mvc:
+    view:
+      prefix: /views/spring.mvc.view.suffix = .html

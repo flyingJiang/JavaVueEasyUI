@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>列表</title>
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/icon.css">
+    <script type="text/javascript" src="../easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="../easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../easyui/bank.js"></script>
+</head>
+<body>
+<!-- 表格 -->
+<table id="dg">
+</table>
+<!-- 工具栏 -->
+<div id="tb">
+    <table cellpadding="0" cellspacing="0">
+        <tr>
+            <td>
+                <a href="javascript:loadAll()" class="easyui-linkbutton" iconCls="Arrowrefresh" plain="true">加载全部</a>
+            </td>
+            <td>
+                <div class="datagrid-btn-separator"></div>
+            </td>
+            <td>
+                &nbsp;检索条件：&nbsp;
+                <select id="searchcondition" class="easyui-combobox" name="searchcondition" style="width:200px;">
+                    <option value="bank_code">bank_code</option>
+                    <option value="bank_name">bank_name</option>
+                </select>&nbsp;
+            </td>
+            <td>
+                <input type="text" id="searchcontent" name="searchcontent" size="20" onkeydown="if(event.keyCode==13){ queryAction(); }"/>
+            </td>
+            <td><a href="javascript:queryAction()" class="easyui-linkbutton" iconCls="Magnifier" plain="true">搜索</a></td>
+            <td>
+                <div class="datagrid-btn-separator"></div>
+            </td>
+            <td><a href="javascript:openAddDialog()" class="easyui-linkbutton" iconCls="icon-add" plain="true">新增</a></td>
+            <td>
+                <div class="datagrid-btn-separator"></div>
+            </td>
+            <td><a href="javascript:openModifyDialog()" class="easyui-linkbutton" iconCls="icon-edit" plain="true">修改</a></td>
+            <td>
+                <div class="datagrid-btn-separator"></div>
+            </td>
+            <td><a href="javascript:deleteAction()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a></td>
+        </tr>
+    </table>
+</div>
+<!-- 弹出新增修改对话框 -->
+<div id="dlg" class="easyui-dialog" style="width:300px;height:200px;padding: 10px 10px" closed="true"
+     buttons="#dialog-buttons" modal="true">
+    <form id="fm" method="post">
+        <table>
+            <tr>
+                <td><label for="bank_code">bank_code</label></td>
+                <td><input type="text" id="bank_code" name="bank_code" class="easyui-validatebox" required="true"/>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="bank_name">bank_name</label></td>
+                <td><input type="text" id="bank_name" name="bank_name" class="easyui-validatebox" required="true"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<!-- 对话框按钮 -->
+<div id="dialog-buttons">
+    <a href="javascript:saveAction()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
+    <a href="javascript:closeDialog()" class="easyui-linkbutton" iconCls="icon-cancel">关闭</a>
+</div>
+</body>
+</html>

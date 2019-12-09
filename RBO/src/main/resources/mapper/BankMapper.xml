@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flying.model.mapper.BankMapper">
+
+    <resultMap id="BaseResultMap" type="com.flying.model.entity.Bank">
+        <id column="ID" jdbcType="NUMERIC" property="id"/>
+        <result column="BANK_CODE" jdbcType="VARCHAR" property="bank_code"/>
+        <result column="HEADQUARTERS_CODE" jdbcType="VARCHAR" property="headquarters_code"/>
+        <result column="BRANCH_BANK_CODE" jdbcType="VARCHAR" property="branch_bank_code"/>
+        <result column="BANK_NAME" jdbcType="VARCHAR" property="bank_name"/>
+        <result column="STATUS" jdbcType="VARCHAR" property="status"/>
+        <result column="CREATOR" jdbcType="VARCHAR" property="creator"/>
+        <result column="CDATE" jdbcType="TIMESTAMP" property="cdate"/>
+        <result column="EDITOR" jdbcType="VARCHAR" property="editor"/>
+        <result column="EDATE" jdbcType="TIMESTAMP" property="edate"/>
+    </resultMap>
+
+    <select id="selectAll" fetchSize="1000" resultMap="BaseResultMap">
+        select
+            ID,
+            BANK_CODE,
+            HEADQUARTERS_CODE,
+            BRANCH_BANK_CODE,
+            BANK_NAME,
+            STATUS,
+            CREATOR,
+            CDATE,
+            EDITOR,
+            EDATE
+        from T_BANK_LIST t
+
+    </select>
+
+</mapper>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Basic CRUD Application - jQuery EasyUI CRUD Demo</title>
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/color.css">
+    <link rel="stylesheet" type="text/css" href="../easyui/demo/demo.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../easyui/jquery.easyui.min.js"></script>
+</head>
+<body>
+<!--<h2>Basic CRUD Application</h2>-->
+<!--<p>Click the buttons on datagrid toolbar to do crud actions.</p>-->
+
+
+<!--<div style="margin:20px 0"></div>-->
+
+<div class="easyui-panel" title="Search Criteria" style="width:100%;max-width:900px; padding:30px 60px;">
+    <form id="ff" method="post">
+        <div style="margin-bottom:20px">
+            <select class="easyui-combobox" name="bankName" label="银行名称:" labelPosition="left" style="width:100%;max-width:300px">
+                <option value="default">--请选择--</option>
+                <option value="AK">Alaska</option>
+                <option value="AZ">Arizona</option>
+                <option value="AR">Arkansas</option>
+                <option value="CA">California</option>
+                <option value="CO">Colorado</option>
+                <option value="CT">Connecticut</option>
+            </select>
+            <select class="easyui-combobox" name="state" label="状态:" labelPosition="left" style="width:100%;max-width:300px">
+                <option value="AL">--请选择--</option>
+                <option value="AK">启用</option>
+                <option value="AZ">停用</option>
+            </select>
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:80px">搜索</a>
+<!--            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width:80px">清除</a>-->
+        </div>
+    </form>
+</div>
+
+<!--<table id="dg" title="My Users" class="easyui-datagrid" style="width:700px;height:250px"-->
+<!--       url="get_users.php"-->
+<!--       toolbar="#toolbar" pagination="true"-->
+<!--       rownumbers="true" fitColumns="true" singleSelect="true">-->
+<!--<table id="dg" title="My Users" class="easyui-datagrid" style="width:900px;height:250px"-->
+<table id="dg"  class="easyui-datagrid" style="width:900px; height:400px"
+       toolbar="#toolbar" pagination="true"
+       rownumbers="true" fitColumns="true" singleSelect="true">
+    <thead>
+    <tr>
+        <th field="Bank Name" width="50">Bank Name</th>
+        <th field="Outage Start Time" width="50">Outage Start Time</th>
+        <th field="Outage End Time" width="50">Outage End Time</th>
+        <th field="Status" width="50">Status</th>
+        <th field="Creator" width="50">Creator</th>
+        <th field="CREATOR" width="50">Create Date</th>
+        <th field="CDATE" width="50">Editor</th>
+        <th field="EDITOR" width="50">Edit Date</th>
+    </tr>
+    </thead>
+</table>
+<div id="toolbar">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newUser()">新增</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editUser()">修改</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-export" plain="true" onclick="destroyUser()">导出</a>
+</div>
+
+<div id="dlg" class="easyui-dialog" style="width:400px"
+     data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">
+    <form id="fm" method="post" novalidate style="margin:0;padding:20px 50px">
+<!--        <h3>User Information</h3>-->
+        <div style="margin-bottom:10px">
+            <input id="cc" name="bank" class="easyui-textbox" required="true" validType="email" label="银行类别" style="width:100%">
+            <div id="sp">
+<!--                <div style="line-height:22px;background:#fafafa;padding:5px;">Select a language</div>-->
+                <div style="padding:10px">
+                    <input type="checkbox" name="lang" value="01"><span>--请选择--</span><br/>
+                    <input type="checkbox" name="lang" value="02"><span>C#</span><br/>
+                    <input type="checkbox" name="lang" value="03"><span>Ruby</span><br/>
+                    <input type="checkbox" name="lang" value="04"><span>Basic</span><br/>
+                    <input type="checkbox" name="lang" value="05"><span>Fortran</span>
+                </div>
+            </div>
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-datebox" id="importDateFrom" name="importDateFrom" data-options="label:'开始时间:', editable:false,value:'currentText'"  style="width:100%">
+
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-datebox" id="importDateTo" name="importDateTo" data-options="label:'结束时间:', editable:false,value:'currentText'"  style="width:100%">
+        </div>
+        <div style="margin-bottom:10px">
+            <select class="easyui-combobox" name="state" label="状态:" labelPosition="left" style="width:100%">
+                <option value="AL">--请选择--</option>
+                <option value="AK">启用</option>
+                <option value="AZ">停用</option>
+            </select>
+        </div>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveUser()" style="width:90px">保存</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:$('#dlg').dialog('close')" style="width:90px">关闭</a>
+</div>
+
+<script type="text/javascript">
+    var url;
+    function newUser(){
+        $('#dlg').dialog('open').dialog('center').dialog('setTitle','新增数据');
+        $('#fm').form('clear');
+        url = 'save_user.php';
+    }
+    function editUser(){
+        var row = $('#dg').datagrid('getSelected');
+        if (row){
+            $('#dlg').dialog('open').dialog('center').dialog('setTitle','Edit User');
+            $('#fm').form('load',row);
+            url = 'update_user.php?id='+row.id;
+        }
+    }
+    function saveUser(){
+        $('#fm').form('submit',{
+            url: url,
+            onSubmit: function(){
+                return $(this).form('validate');
+            },
+            success: function(result){
+                var result = eval('('+result+')');
+                if (result.errorMsg){
+                    $.messager.show({
+                        title: 'Error',
+                        msg: result.errorMsg
+                    });
+                } else {
+                    $('#dlg').dialog('close');        // close the dialog
+                    $('#dg').datagrid('reload');    // reload the user data
+                }
+            }
+        });
+    }
+    function destroyUser(){
+        var row = $('#dg').datagrid('getSelected');
+        if (row){
+            $.messager.confirm('Confirm','Are you sure you want to destroy this user?',function(r){
+                if (r){
+                    $.post('destroy_user.php',{id:row.id},function(result){
+                        if (result.success){
+                            $('#dg').datagrid('reload');    // reload the user data
+                        } else {
+                            $.messager.show({    // show error message
+                                title: 'Error',
+                                msg: result.errorMsg
+                            });
+                        }
+                    },'json');
+                }
+            });
+        }
+    }
+    $(function(){
+        $('#cc').combo({
+            required:true,
+            editable:false,
+            label:'银行类别:',
+            labelPosition:'left'
+        });
+        $('#sp').appendTo($('#cc').combo('panel'));
+        $('#sp input').click(function(){
+            var v = $(this).val();
+            var s = $(this).next('span').text();
+            $('#cc').combo('setValue', v).combo('setText', s).combo('hidePanel');
+        });
+    });
+</script>
+</body>
+</html>
